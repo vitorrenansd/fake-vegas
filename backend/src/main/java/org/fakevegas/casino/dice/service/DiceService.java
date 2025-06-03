@@ -12,10 +12,10 @@ public class DiceService {
 
     public DiceResult play(DiceRequest request) {
         int rolled = random.nextInt(101); // pseudorandom, i need to fix this
-
         // Determine win condition
-        boolean win = request.inverted() ? 
-            rolled > request.cutoff() : rolled < request.cutoff();
+        boolean win = request.inverted() 
+            ? rolled >= (100 - request.cutoff()) 
+            : rolled <= request.cutoff();
         return new DiceResult(rolled, win);
     }
 }
