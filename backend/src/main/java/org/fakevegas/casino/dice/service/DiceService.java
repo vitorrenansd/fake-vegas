@@ -15,7 +15,7 @@ public class DiceService {
 
         // Determine win condition
         boolean win = request.inverted() ? 
-            rolled < request.cutoff() : rolled > request.cutoff();
+            rolled > request.cutoff() : rolled < request.cutoff();
         return new DiceResult(rolled, win);
     }
 }
