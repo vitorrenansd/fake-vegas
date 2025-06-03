@@ -1,11 +1,11 @@
-package casino;
+package org.fakevegas.casino;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FakeVegas {
+public class Application {
 	public static void main(String[] args) {
-		SpringApplication.run(FakeVegas.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }
