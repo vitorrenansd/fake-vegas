@@ -1,3 +1,5 @@
 package org.fakevegas.casino.roulette.dto;
 
-public record RouletteResult(int rolledColor, boolean win) {}
+import org.fakevegas.casino.roulette.model.Colors;
+
+public record RouletteResult(Colors rolledColor, boolean win) {}
