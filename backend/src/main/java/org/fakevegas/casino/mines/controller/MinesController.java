@@ -2,7 +2,7 @@ package org.fakevegas.casino.mines.controller;
 
 import org.fakevegas.casino.mines.dto.ClickRequest;
 import org.fakevegas.casino.mines.dto.MinesResult;
-import org.fakevegas.casino.mines.model.MinesGame;
+import org.fakevegas.casino.mines.dto.MinesRequest;
 import org.fakevegas.casino.mines.service.MinesService;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,22 +10,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/mines")
 @CrossOrigin("*")
 public class MinesController {
-    private final MinesService minesService;
+    private final MinesService service;
 
-    public MinesController(MinesService minesService) {
-        this.minesService = minesService;
+    public MinesController(MinesService service) {
+        this.service = service;
     }
 
     @PostMapping("/play")
-    public MinesResult play(@RequestParam int bet, @RequestParam int mines) {
-        MinesGame minesGame = minesService.startGame(bet, mines);
-        return new MinesResult(minesGame.isExploded(), minesGame.getField());
+    public MinesResult start(@RequestBody MinesRequest request) {
+        return service.startGame(request);
     }
 
     @PostMapping("/click")
     public MinesResult click(@RequestBody ClickRequest clickRequest) {
-        MinesGame minesGame = minesService.getCurrentGame();
-        minesGame.click(clickRequest.getIndex());
-        return new MinesResult(minesGame.isExploded(), minesGame.getField());
+        return service.click(clickRequest);
     }
 }
