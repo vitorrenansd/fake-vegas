@@ -35,10 +35,10 @@ public class MinesGame {
 
         int clickedIdx = field.get(index);
 
-        if (clickedIdx == 1) {
+        if (clickedIdx == 1) { // If has a bomb
             exploded = true;
             return false;
-        } else if (clickedIdx == 0) {
+        } else if (clickedIdx == 0) { // If not
             field.set(index, 2);
             return true;
         }
