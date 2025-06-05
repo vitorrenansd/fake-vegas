@@ -1,8 +1,9 @@
 package org.fakevegas.casino.mines.service;
 
 import org.fakevegas.casino.mines.dto.ClickRequest;
-import org.fakevegas.casino.mines.dto.MinesRequest;
-import org.fakevegas.casino.mines.dto.MinesResult;
+import org.fakevegas.casino.mines.dto.ClickResult;
+import org.fakevegas.casino.mines.dto.GameRequest;
+import org.fakevegas.casino.mines.dto.GameResult;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,22 +20,29 @@ public class MinesService {
     public int getBetAmount() {
         return this.betAmount;
     }
+
+    private GameResult toGameResult() {
+        return new GameResult(calculateMultiplier(), field);
+    }
+    private ClickResult toClickResult() {
+        return new ClickResult(exploded, calculateMultiplier());
+    }
     
     // Initializes a new mines game
-    public MinesResult startGame(MinesRequest request) {
+    public GameResult startGame(GameRequest request) {
         this.betAmount = request.betAmount();
         this.mines = request.mines();
         this.exploded = false;
         this.field = generateField(mines);
-        return toResult();
+        return toGameResult();
     }
 
     // Handles player click on a field position
-    public MinesResult click(ClickRequest clickRequest) {
-        if (exploded || field == null) return toResult();
+    public ClickResult click(ClickRequest clickRequest) {
+        if (exploded || field == null) return toClickResult();
 
         int index = clickRequest.index();
-        if (index < 0 || index >= 25) return toResult();
+        if (index < 0 || index >= fieldSize) return toClickResult();
 
         int value = field.get(index);
         if (value == 1) {
@@ -42,7 +50,7 @@ public class MinesService {
         } else if (value == 0) {
             field.set(index, 2);
         }
-        return toResult();
+        return toClickResult();
     }
 
     // Creates and shuffles the game field with bombs
@@ -67,12 +75,7 @@ public class MinesService {
         for (int i = 0; i < safeRevealed; i++) {
             multiplier *= (double)(totalSafe - i) / (fieldSize - i);
         }
-        double rtp = 0.99;
+        double rtp = 0.92;
         return Math.round((1.0 / multiplier) * rtp * 100.0) / 100.0;
-    }
-
-    // Creates result object with current game state
-    private MinesResult toResult() {
-        return new MinesResult(exploded, calculateMultiplier(), field);
     }
 }
