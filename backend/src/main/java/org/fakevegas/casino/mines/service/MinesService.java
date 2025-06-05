@@ -20,6 +20,7 @@ public class MinesService {
         return this.betAmount;
     }
     
+    // Initializes a new mines game
     public MinesResult startGame(MinesRequest request) {
         this.betAmount = request.betAmount();
         this.mines = request.mines();
@@ -28,6 +29,7 @@ public class MinesService {
         return toResult();
     }
 
+    // Handles player click on a field position
     public MinesResult click(ClickRequest clickRequest) {
         if (exploded || field == null) return toResult();
 
@@ -38,19 +40,25 @@ public class MinesService {
         if (value == 1) {
             exploded = true;
         } else if (value == 0) {
-            field.set(index, 2); // marcar como clicado
+            field.set(index, 2);
         }
         return toResult();
     }
 
+    // Creates and shuffles the game field with bombs
     private List<Integer> generateField(int bombs) {
         List<Integer> newField = new ArrayList<>();
-        for (int i = 0; i < bombs; i++) newField.add(1); // bombas
-        for (int i = bombs; i < fieldSize; i++) newField.add(0); // seguros
-        Collections.shuffle(newField);
+        // 0 = empty
+        // 1 = bomb
+        // 2 = clicked
+        for (int i = 0; i < bombs; i++) newField.add(1); // Contains bombs
+        for (int i = bombs; i < fieldSize; i++) newField.add(0); // Safe ones
+
+        Collections.shuffle(newField); // Shuffle the field
         return newField;
     }
 
+    // Calculates current win multiplier based on revealed safe positions
     private double calculateMultiplier() {
         int totalSafe = fieldSize - mines;
         long safeRevealed = field.stream().filter(i -> i == 2).count();
@@ -63,6 +71,7 @@ public class MinesService {
         return Math.round((1.0 / multiplier) * rtp * 100.0) / 100.0;
     }
 
+    // Creates result object with current game state
     private MinesResult toResult() {
         return new MinesResult(exploded, calculateMultiplier(), field);
     }
