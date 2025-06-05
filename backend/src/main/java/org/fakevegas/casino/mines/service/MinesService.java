@@ -16,22 +16,22 @@ public class MinesService {
     private int mines;
     private boolean exploded;
 
+    public int getBetAmount() {
+        return this.betAmount;
+    }
+    
     public MinesResult startGame(MinesRequest request) {
-        this.betAmount = request.getBetAmount();
-        this.mines = request.getMines();
+        this.betAmount = request.betAmount();
+        this.mines = request.mines();
         this.exploded = false;
         this.field = generateField(mines);
         return toResult();
     }
 
-    public int getBetAmount() {
-        return this.betAmount;
-    }
-
     public MinesResult click(ClickRequest clickRequest) {
         if (exploded || field == null) return toResult();
 
-        int index = clickRequest.getIndex();
+        int index = clickRequest.index();
         if (index < 0 || index >= 25) return toResult();
 
         int value = field.get(index);
