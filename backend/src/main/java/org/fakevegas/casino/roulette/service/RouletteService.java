@@ -15,7 +15,8 @@ public class RouletteService {
         Slots[] slots = Slots.values();
         Slots rolledSlot = slots[random.nextInt(slots.length)]; // pseudorandom, i need to fix this
 
-        boolean win = rolledSlot.getColor() == request.color();
+        boolean win = request.color() == rolledSlot.getColor();
+        
         return new RouletteResult(rolledSlot.getColor(), win);
     }
 }
