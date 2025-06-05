@@ -1,8 +1,9 @@
 package org.fakevegas.casino.mines.controller;
 
 import org.fakevegas.casino.mines.dto.ClickRequest;
-import org.fakevegas.casino.mines.dto.MinesResult;
-import org.fakevegas.casino.mines.dto.MinesRequest;
+import org.fakevegas.casino.mines.dto.ClickResult;
+import org.fakevegas.casino.mines.dto.GameResult;
+import org.fakevegas.casino.mines.dto.GameRequest;
 import org.fakevegas.casino.mines.service.MinesService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +18,12 @@ public class MinesController {
     }
 
     @PostMapping("/play")
-    public MinesResult start(@RequestBody MinesRequest request) {
+    public GameResult start(@RequestBody GameRequest request) {
         return service.startGame(request);
     }
 
     @PostMapping("/click")
-    public MinesResult click(@RequestBody ClickRequest clickRequest) {
+    public ClickResult click(@RequestBody ClickRequest clickRequest) {
         return service.click(clickRequest);
     }
 }
